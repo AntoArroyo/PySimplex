@@ -200,6 +200,10 @@ def simplex(c, A, b):
         pivot_row = np.where(valid_rows)[0][np.argmin(ratios)]
         print(f"Leaving Variable: {header[pivot_row]}")
 
+        # Print pivot value need it
+        print(f"Value used: {  1 / tableau[pivot_row, pivot_col]}")
+
+
         # Perform pivoting
         tableau[pivot_row, :] /= tableau[pivot_row, pivot_col]
         for i in range(len(tableau)):
