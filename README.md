@@ -38,7 +38,7 @@ Run the script with the following command:
 ``` bash
 python simplex_solver.py [-csv] <filename>
 ```
-- csv (optional): Use if the input file is in CSV format. If not provided, it assumes an Excel file.
-- <filename>: Path to the CSV or Excel file with the problem data.
+- `csv` (optional): Use if the input file is in CSV format. If not provided, it assumes an Excel file.
+- `<filename>`: Path to the CSV or Excel file with the problem data.
 
 
