@@ -193,10 +193,13 @@ def simplex(c, A, b):
 
         # Print pivot element
         pivot_element = tableau[pivot_row, pivot_col]
-        print(f"Pivot Element: {pivot_element}")
+        #print(f"Pivot Element: {pivot_element}")
+
+
+        print(f"Gaussian Operations")
 
         # Perform pivoting
-        print(f"Performing row operations to make column {pivot_col+1} a unit vector.")
+        #print(f"Performing row operations to make column {pivot_col+1} a unit vector.")
         tableau[pivot_row, :] /= pivot_element
         print(f"R{pivot_row+1} -> R{pivot_row+1} / {pivot_element}")
 
@@ -209,7 +212,7 @@ def simplex(c, A, b):
         # Update the objective function row separately
         multiplier = tableau[-1, pivot_col]
         tableau[-1, :] -= multiplier * tableau[pivot_row, :]
-        print(f"Z -> Z - ({multiplier}) * R{pivot_row+1}")
+       # print(f"Z -> Z - ({multiplier}) * R{pivot_row+1}")
 
         # Update basis
         basis_vars[pivot_row], non_basis_vars[pivot_col] = non_basis_vars[pivot_col], basis_vars[pivot_row]
