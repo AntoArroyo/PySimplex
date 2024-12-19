@@ -176,18 +176,9 @@ def simplex(c, A, b):
             print("Optimal solution found.")
             break
 
-        # Check if the solution is infinite
-        if np.any(np.isclose(last_row, 0)):  # Objective row contains a zero coefficient
-            # Find constraints parallel to the objective function
-            for i, row in enumerate(A):
-                if np.isclose(row @ c, c @ c):  # Check for parallelism
-                    print(f"Infinite solutions detected due to constraint {i + 1} being parallel to the objective function.")
-                    print(f"The feasible region extends infinitely along the constraint starting at point: {b[i]}.")
-                    break
-
         # Choose pivot column (entering variable)
         pivot_col = np.argmin(last_row)
-        print(f"Entering Variable: x{pivot_col+1}")
+        print(f"Entering Variable: {header[pivot_col]}")
 
         # Check for unbounded solution
         valid_rows = tableau[:-1, pivot_col] > 0
@@ -198,17 +189,27 @@ def simplex(c, A, b):
         # Choose pivot row (leaving variable)
         ratios = tableau[:-1, -1][valid_rows] / tableau[:-1, pivot_col][valid_rows]
         pivot_row = np.where(valid_rows)[0][np.argmin(ratios)]
-        print(f"Leaving Variable: {header[pivot_row]}")
+        print(f"Leaving Variable: {header[basis_vars[pivot_row]]}")
 
-        # Print pivot value need it
-        print(f"Value used: {  1 / tableau[pivot_row, pivot_col]}")
-
+        # Print pivot element
+        pivot_element = tableau[pivot_row, pivot_col]
+        print(f"Pivot Element: {pivot_element}")
 
         # Perform pivoting
-        tableau[pivot_row, :] /= tableau[pivot_row, pivot_col]
-        for i in range(len(tableau)):
+        print(f"Performing row operations to make column {pivot_col+1} a unit vector.")
+        tableau[pivot_row, :] /= pivot_element
+        print(f"R{pivot_row+1} -> R{pivot_row+1} / {pivot_element}")
+
+        for i in range(len(tableau) - 1):  # Avoid modifying the last (objective) row
             if i != pivot_row:
-                tableau[i, :] -= tableau[i, pivot_col] * tableau[pivot_row, :]
+                multiplier = tableau[i, pivot_col]
+                tableau[i, :] -= multiplier * tableau[pivot_row, :]
+                print(f"R{i+1} -> R{i+1} - ({multiplier}) * R{pivot_row+1}")
+
+        # Update the objective function row separately
+        multiplier = tableau[-1, pivot_col]
+        tableau[-1, :] -= multiplier * tableau[pivot_row, :]
+        print(f"Z -> Z - ({multiplier}) * R{pivot_row+1}")
 
         # Update basis
         basis_vars[pivot_row], non_basis_vars[pivot_col] = non_basis_vars[pivot_col], basis_vars[pivot_row]
@@ -222,7 +223,9 @@ def simplex(c, A, b):
     print("\nOptimal Solution:")
     print("Objective Function Value:", tableau[-1, -1])
     print("Variable Values:", solution)
+
     return solution
+
 
 
 if __name__ == "__main__":
