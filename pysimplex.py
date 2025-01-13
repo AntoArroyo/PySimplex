@@ -207,7 +207,10 @@ def simplex(c, A, b):
             if i != pivot_row:
                 multiplier = tableau[i, pivot_col]
                 tableau[i, :] -= multiplier * tableau[pivot_row, :]
-                print(f"R{i+1} -> R{i+1} - ({multiplier}) * R{pivot_row+1}")
+               # print(f"R{i+1} -> R{i+1} - ({multiplier}) * R{pivot_row+1}")
+                print(f"R{i+1} -> R{i+1} - ({1 * multiplier/pivot_element:.2f}) * R{pivot_row+1}")
+
+
 
         # Update the objective function row separately
         multiplier = tableau[-1, pivot_col]
